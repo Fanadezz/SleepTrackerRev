@@ -20,12 +20,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A fragment with buttons to record start and end times for sleep, which are saved in
@@ -37,11 +38,11 @@ class SleepTrackerFragment : Fragment() {
     private lateinit var factory: SleepTrackerViewModelFactory
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding =  FragmentSleepTrackerBinding.inflate(inflater)
+        val binding = FragmentSleepTrackerBinding.inflate(inflater)
 
 
         //application
@@ -56,7 +57,7 @@ class SleepTrackerFragment : Fragment() {
         //initialize ViewModel Factory
 
 
-        factory = SleepTrackerViewModelFactory(dao,application)
+        factory = SleepTrackerViewModelFactory(dao, application)
 
 
         val viewModel = ViewModelProvider(this, factory).get(SleepTrackerViewModel::class.java)
@@ -70,6 +71,40 @@ class SleepTrackerFragment : Fragment() {
         //make binding observe liveData
 
         binding.lifecycleOwner = viewLifecycleOwner
+
+
+        //observe Nav Event
+        viewModel.eventNavigateToSleepDetail.observe(viewLifecycleOwner) { night ->
+
+            val id = night?.nightId
+
+            id?.let {
+
+                findNavController().navigate(
+                        SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepQualityFragment(it))
+                viewModel.navigationComplete()
+
+            }
+        }
+
+
+        //observe SnackBarEvent
+
+        viewModel.showSnackBarEvent.observe(viewLifecycleOwner){
+
+
+
+             snackBarEvent ->
+
+            if (snackBarEvent){
+
+                Snackbar.make(binding.root, resources.getString(R.string.cleared_message), Snackbar
+                        .LENGTH_SHORT).show()
+                viewModel.onSnackBarEventFinished()
+            }
+
+
+        }
 
         return binding.root
     }
