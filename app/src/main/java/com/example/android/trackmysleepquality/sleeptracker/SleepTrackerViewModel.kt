@@ -37,7 +37,7 @@ class SleepTrackerViewModel(
 
     //get all nights - ROOM takes care of updating this LiveData if anything changes. ROOM as mechanism to
     // getAllNights in the background
-    private val nights = database.getAllNights()
+    val nights = database.getAllNights()
 
     val nightsString = Transformations.map(nights){nights -> formatNights(nights, application.resources)}
 

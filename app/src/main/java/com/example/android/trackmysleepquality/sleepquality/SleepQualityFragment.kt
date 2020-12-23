@@ -28,7 +28,9 @@ import androidx.navigation.fragment.navArgs
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepQualityBinding
+import com.example.android.trackmysleepquality.sleeptracker.SleepNightAdapter
 import com.example.android.trackmysleepquality.sleeptracker.SleepTrackerViewModel
+import kotlinx.android.synthetic.main.fragment_sleep_tracker.*
 
 /**
  * Fragment that displays a list of clickable icons,
@@ -87,7 +89,6 @@ class SleepQualityFragment : Fragment() {
                 viewModel.navigationComplete()
             }
         }
-
 
 
 
