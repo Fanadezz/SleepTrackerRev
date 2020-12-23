@@ -1,36 +1,25 @@
 package com.example.android.trackmysleepquality.sleeptracker
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
+/*class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {*/
 
-class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
-    var data = listOf<SleepNight>()
-    //create setter for the data
-
-        set(value) {
-
-            field = value
-
-            notifyDataSetChanged()
-        }
-
-
-    override fun getItemCount(): Int = data.size
+class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallBack()) {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+        val item = getItem(position)
         holder.bind(item)
     }
 
@@ -44,7 +33,7 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
     }
 
 
-    class ViewHolder private  constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
         val sleepLength = itemView.findViewById<TextView>(R.id.sleep_length)
@@ -71,7 +60,7 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
 
 
         companion object {
-      fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup): ViewHolder {
                 //get layout inflater from parent view which knows much about themselves
                 val inflater = LayoutInflater.from(parent.context)
 
@@ -85,13 +74,14 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
 
     }
 
-    class SleepNightDiffCallBack:DiffUtil.ItemCallback<SleepNight>(){
+
+    class SleepNightDiffCallBack : DiffUtil.ItemCallback<SleepNight>() {
         override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
             return oldItem.nightId == newItem.nightId
         }
 
         override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
-          return oldItem == newItem
+            return oldItem == newItem
         }
     }
 
