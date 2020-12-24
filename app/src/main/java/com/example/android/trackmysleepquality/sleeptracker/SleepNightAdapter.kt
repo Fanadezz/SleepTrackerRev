@@ -8,7 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemSleepNightBinding
 
+
+//Constants to to check item type (i.e. between a header or a SleepNightItem)
+
+private const val ITEM_VIEW_TYPE_HEADER = 0
+private const val ITEM_VIEW_TYPE_SLEEP_ITEM = 1
+
 /*class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {*/
+
+/*SleepNightAdapter(val clickListener: SleepNightClickListener) : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>
+                                   (SleepNightDiffCallBack()) {*/
+
+/*we needt to the adapter to use any time of ViewHolder not only the SleepNightAdapter. we change the 2nd
+Argument from SleepNightAdapter to the generic RecyclerView.ViewHolder*/
+
+
 
 class SleepNightAdapter(val clickListener: SleepNightClickListener) : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>
                                    (SleepNightDiffCallBack()) {
@@ -86,4 +100,26 @@ class SleepNightClickListener(val clickListener: (id:Long)-> Unit){
 
 
     fun onClick(night:SleepNight) = clickListener(night.nightId)
+}
+
+
+sealed class DataItem{
+
+    //abstract val
+
+    abstract val id:Long
+
+    //nested class
+
+    data class SleepNightItem(val sleepNight:SleepNight): DataItem(){
+        override val id: Long = sleepNight.nightId
+
+    }
+    object Header:DataItem(){
+
+
+        override val id = Long.MIN_VALUE
+    }
+
+
 }
