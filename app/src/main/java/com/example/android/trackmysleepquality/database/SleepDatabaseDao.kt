@@ -51,9 +51,11 @@ interface SleepDatabaseDao {
 
 
     //get all night and return a LiveData list
+    @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC")
+    fun getAllNights(): LiveData<List<SleepNight>>
 
     @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC LIMIT 1")
-    suspend fun getTonight(): SleepNight?
+     fun getTonight(): SleepNight?
 
     /**
      * Selects and returns the night with given nightId.

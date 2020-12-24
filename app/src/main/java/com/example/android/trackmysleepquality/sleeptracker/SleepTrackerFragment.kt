@@ -112,9 +112,7 @@ class SleepTrackerFragment : Fragment() {
 
         //instantiate adapter
         val adapter = SleepNightAdapter(SleepNightClickListener {
-
-            Toast.makeText(
-                    activity, "$it", Toast.LENGTH_SHORT).show()
+id -> viewModel.onSleepNightClicked(id)
         })
 
         //set RecyclerView's Adapter
@@ -128,11 +126,8 @@ class SleepTrackerFragment : Fragment() {
         // observe and show night when it is not null
         viewModel.nights.observe(viewLifecycleOwner){
 
-            it?.let {
 
-                //adapter.data = it
-                adapter.submitList(it)
-            }
+            adapter.submitList(it)
         }
 
         //observe navigateToSleepDataQuality
@@ -143,10 +138,9 @@ class SleepTrackerFragment : Fragment() {
 
             night?.let {
 
-                findNavController().navigate(
+                findNavController().navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(it))
 
-                        SleepTrackerFragmentDirections.actionSleepTrackerToSleepDetailFragment(night)
-                                            )
+                viewModel.onSleepDataQualityNavCompleted()
             }
         }
 
