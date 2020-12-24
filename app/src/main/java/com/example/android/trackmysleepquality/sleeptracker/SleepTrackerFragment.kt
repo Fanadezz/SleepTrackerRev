@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -110,7 +111,11 @@ class SleepTrackerFragment : Fragment() {
 
 
         //instantiate adapter
-        val adapter = SleepNightAdapter()
+        val adapter = SleepNightAdapter(SleepNightClickListener {
+
+            Toast.makeText(
+                    activity, "$it", Toast.LENGTH_SHORT).show()
+        })
 
         //set RecyclerView's Adapter
         binding.sleepList.adapter = adapter
@@ -130,7 +135,24 @@ class SleepTrackerFragment : Fragment() {
             }
         }
 
+        //observe navigateToSleepDataQuality
+
+        viewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner){
+
+            night ->
+
+            night?.let {
+
+                findNavController().navigate(
+
+                        SleepTrackerFragmentDirections.actionSleepTrackerToSleepDetailFragment(night)
+                                            )
+            }
+        }
+
 
         return binding.root
     }
+
+
 }

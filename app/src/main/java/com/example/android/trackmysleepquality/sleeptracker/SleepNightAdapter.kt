@@ -5,20 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.trackmysleepquality.R
-import com.example.android.trackmysleepquality.convertDurationToFormatted
-import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemSleepNightBinding
 
 /*class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {*/
 
-class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallBack()) {
+class SleepNightAdapter(val clickListener: SleepNightClickListener) : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>
+                                   (SleepNightDiffCallBack()) {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
 
 
@@ -35,10 +33,10 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
                                                                             (binding.root) {
 
 
-        fun bind(item: SleepNight) {
+        fun bind(item: SleepNight, clickListener: SleepNightClickListener) {
 
             binding.sleepNight = item
-
+binding.sleepClickListener = clickListener
             binding.executePendingBindings()
 
           /*  val res = itemView.context.resources
@@ -79,11 +77,13 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
     }
 
 
-    class SleepNightClickListener(val clickListener: (id:Long)-> Unit){
 
 
-        fun onClick(night:SleepNight) = clickListener(night.nightId)
-    }
+
+}
+
+class SleepNightClickListener(val clickListener: (id:Long)-> Unit){
 
 
+    fun onClick(night:SleepNight) = clickListener(night.nightId)
 }
