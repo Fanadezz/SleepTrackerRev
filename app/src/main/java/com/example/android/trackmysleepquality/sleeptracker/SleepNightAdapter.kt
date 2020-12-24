@@ -24,7 +24,7 @@ Argument from SleepNightAdapter to the generic RecyclerView.ViewHolder*/
 
 
 
-class SleepNightAdapter(val clickListener: SleepNightClickListener) : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>
+class SleepNightAdapter(val clickListener: SleepNightClickListener) : ListAdapter<SleepNight, RecyclerView.ViewHolder>
                                    (SleepNightDiffCallBack()) {
 
 
