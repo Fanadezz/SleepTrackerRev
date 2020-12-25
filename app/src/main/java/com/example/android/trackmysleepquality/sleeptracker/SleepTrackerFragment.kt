@@ -121,13 +121,27 @@ id -> viewModel.onSleepNightClicked(id)
         //create Layout Manager
         val layoutManager = GridLayoutManager(activity,3)
 
+        //span look-up depending on the index
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+            override fun getSpanSize(position: Int): Int {
+
+                return when ( position){
+
+                    0 -> 3
+                    else -> 1
+                }
+            }
+
+
+        }
+
         binding.sleepList.layoutManager = layoutManager
 
         // observe and show night when it is not null
         viewModel.nights.observe(viewLifecycleOwner){
 
 
-            adapter.submitList(it)
+            adapter.addHeaderAndSubmitList(it)
         }
 
         //observe navigateToSleepDataQuality

@@ -143,4 +143,4 @@ fun convertDurationToFormatted(startTimeMilli: Long, endTimeMilli: Long, res: Re
 }
 private val ONE_MINUTE_MILLIS = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES)
 private val ONE_HOUR_MILLIS = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
-class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)
+//class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)
